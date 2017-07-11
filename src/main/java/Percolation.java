@@ -4,11 +4,11 @@
 public class Percolation {
 
     private int gridSize;
-    private boolean grid[][];
+    private wsdasd grid[][];
 
     // create n-by-n grid, with all sites blocked
     public Percolation(int n){
-        this.gridSize = n;
+        this.gridSize = n*n+2;
         grid = new boolean[n][n];
     }
 
