@@ -1,0 +1,12 @@
+target/classes/PercolationVisualizer.class
+target/classes/PercolationStats.class
+target/classes/Percolation.class
+target/classes/InteractivePercolationVisualizer.class
+courserea.iml
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/libraries/algs4.xml
+.idea/compiler.xml
+.idea/.name
