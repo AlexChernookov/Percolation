@@ -37,27 +37,39 @@ public class Percolation {
 
     // get corresponding number to connect in gridConnection
     private int getCorrespondingNumber(int row, int col) {
-        return (row - 1) * N + col;
+        if (row < 0 || col < 0 || row > N || col > N) {
+            return -1;
+        }
+        return row * N + col + 1;
     }
+
 
     // connect neighbors of element if they are opened
     private void connectNeighbors(int row, int col) {
-        int current = getCorrespondingNumber(row, col);
-        if (isTopSideOpen(row, col)) {
-            int top = getCorrespondingNumber(row - 1, col);
-            gridConnection.union(current, top);
+        int currentSite = getCorrespondingNumber(row, col);
+        int topSite = getCorrespondingNumber(row - 1, col);
+        int bottomSite = getCorrespondingNumber(row + 1, col);
+        int leftSite = getCorrespondingNumber(row, col - 1);
+        int rightSite = getCorrespondingNumber(row, col + 1);
+        if (isInRange(topSite)) {
+            if (isTopSideOpen(row, col)) {
+                gridConnection.union(currentSite, topSite);
+            }
         }
-        if (isBottomSideOpen(row, col)) {
-            int bottom = getCorrespondingNumber(row + 1, col);
-            gridConnection.union(current, bottom);
+        if (isInRange(bottomSite)) {
+            if (isBottomSideOpen(row, col)) {
+                gridConnection.union(currentSite, bottomSite);
+            }
         }
-        if (isLeftSideOpen(row, col)) {
-            int left = getCorrespondingNumber(row, col - 1);
-            gridConnection.union(current, left);
+        if (isInRange(leftSite)) {
+            if (isLeftSideOpen(row, col)) {
+                gridConnection.union(currentSite, leftSite);
+            }
         }
-        if (isRightSideOpen(row, col)) {
-            int right = getCorrespondingNumber(row, col + 1);
-            gridConnection.union(current, right);
+        if (isInRange(rightSite)) {
+            if (isRightSideOpen(row, col)) {
+                gridConnection.union(currentSite, rightSite);
+            }
         }
     }
 
@@ -79,7 +91,21 @@ public class Percolation {
 
     // is site (row, col) open?
     public boolean isOpen(int row, int col) {
+        if (row < 0 || col < 0) {
+            throw new IllegalArgumentException("Value should row " + row + " < 0, or col " + col + " < 0");
+        }
+        if (row > N + 1 || col > N + 1) {
+            throw new IllegalArgumentException("The value is out of bound");
+        }
         return grid[row][col];
+    }
+
+    //is in range of connected array
+    private boolean isInRange(int number) {
+        if (number <= 0 || number >= BOTTOM) {
+            return false;
+        }
+        return true;
     }
 
     // is site (row, col) full?
