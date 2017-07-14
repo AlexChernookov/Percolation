@@ -9,6 +9,7 @@ public class Percolation {
     private int N;
     private boolean[][] grid;
     private WeightedQuickUnionUF gridConnection;
+    private int openSides = 0;
     private int TOP = 0;
     private int BOTTOM;
 
@@ -32,6 +33,7 @@ public class Percolation {
         row = row - 1;
         col = col - 1;
         grid[row][col] = true;
+        openSides++;
         connectNeighbors(row, col);
     }
 
@@ -42,7 +44,6 @@ public class Percolation {
         }
         return row * N + col + 1;
     }
-
 
     // connect neighbors of element if they are opened
     private void connectNeighbors(int row, int col) {
@@ -100,6 +101,7 @@ public class Percolation {
         return grid[row][col];
     }
 
+
     //is in range of connected array
     private boolean isInRange(int number) {
         if (number <= 0 || number >= BOTTOM) {
@@ -115,7 +117,7 @@ public class Percolation {
 
     // number of open sites
     public int numberOfOpenSites() {
-        return 0;
+        return openSides;
     }
 
     // does the system percolate?
