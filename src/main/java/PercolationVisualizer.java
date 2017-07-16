@@ -20,6 +20,7 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 
 import java.awt.*;
+import java.io.File;
 
 public class PercolationVisualizer {
 
@@ -60,7 +61,9 @@ public class PercolationVisualizer {
     }
 
     public static void main(String[] args) {
-        In in = new In("C:\\git\\courserea\\src\\main\\java\\greeting57.txt");      // input file
+        File file = new File("/Users/ialex4/Percolation/src/main/resources/greeting57.txt");
+        String absolutePath = file.getAbsolutePath();
+        In in = new In(absolutePath);      // input file
         int n = in.readInt();         // n-by-n percolation system
 
         // turn on animation mode

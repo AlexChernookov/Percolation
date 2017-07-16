@@ -1,33 +1,69 @@
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
+
 /**
  * Created by a178300 on 7/10/2017.
  */
 public class PercolationStats {
-    // perform trials independent experiments on an n-by-n grid
+    private double[] x;
+
     public PercolationStats(int n, int trials) {
+        // perform trials independent experiments on an n-by-n grid
+        if (n <= 0 || trials <= 0) throw new java.lang.IllegalArgumentException("Pass n and t as arguments");
+
+        this.x = new double[trials];
+
+        for (int i = 0; i < trials; i++) {
+            int openSitesWhenPercolates = this.performTrial(n);
+            x[i] = (double) openSitesWhenPercolates / (n * n);
+        }
     }
 
-    // sample mean of percolation threshold
+    private int performTrial(int n) {
+        Percolation p = new Percolation(n);
+
+        while (!p.percolates()) {
+            int siteRow = StdRandom.uniform(1, n + 1);
+            int siteCol = StdRandom.uniform(1, n + 1);
+
+            if (!p.isOpen(siteRow, siteCol)) {
+                p.open(siteRow, siteCol);
+            }
+        }
+
+        return p.numberOfOpenSites();
+    }
+
     public double mean() {
-        return 0;
+        // sample mean of percolation threshold
+        return StdStats.mean(this.x);
     }
 
-    // sample standard deviation of percolation threshold
     public double stddev() {
-        return 0;
+        // sample standard deviation of percolation threshold
+        return StdStats.stddev(this.x);
     }
 
-    // low  endpoint of 95% confidence interval
     public double confidenceLo() {
-        return 0;
+        // low  endpoint of 95% confidence interval
+        return this.mean() - (1.96 * this.stddev() / Math.sqrt(this.x.length));
     }
 
-    // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return 0;
+        // high endpoint of 95% confidence interval
+        return this.mean() + (1.96 * this.stddev() / Math.sqrt(this.x.length));
     }
 
-    // test client (described below)
     public static void main(String[] args) {
+        int n = Integer.parseInt(args[0]);
+        int trials = Integer.parseInt(args[1]);
 
+        System.out.println("Performing " + trials + " trials on grids of side: " + n);
+
+        PercolationStats pStats = new PercolationStats(n, trials);
+
+        System.out.println("Mean                    = " + pStats.mean());
+        System.out.println("Stddev                  = " + pStats.stddev());
+        System.out.println("95% confidence interval = [" + pStats.confidenceLo() + ", " + pStats.confidenceHi() + "]");
     }
 }
