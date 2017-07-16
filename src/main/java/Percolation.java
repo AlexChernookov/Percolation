@@ -6,7 +6,8 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
     private boolean[][] grid;
     private WeightedQuickUnionUF gridConnection;
-    private int gridConnectionSize, sidesNum, openSides, top = 0, bottom;
+    private final int gridConnectionSize, sidesNum, top = 0, bottom;
+    private int openSides = 0;
 
     // create n-by-n grid, with all sidesNum blocked
     public Percolation(int n) {
@@ -24,10 +25,18 @@ public class Percolation {
         }
     }
 
+    private void checkBounds(int row, int col) {
+        if (row < 0 || col > sidesNum)
+            throw new java.lang.IllegalArgumentException("row index '" + row + "' is out of bounds");
+        if (row < 0 || col > sidesNum)
+            throw new java.lang.IllegalArgumentException("column index '" + col + "' is out of bounds");
+    }
+
     // open site (row, col) if it is not open already
     public void open(int row, int col) {
         row = row - 1;
         col = col - 1;
+        checkBounds(col, row);
         grid[row][col] = true;
         openSides++;
         connectNeighbors(row, col);
@@ -93,12 +102,7 @@ public class Percolation {
     public boolean isOpen(int row, int col) {
         row = row - 1;
         col = col - 1;
-        if (row < 0 || col < 0) {
-            throw new IllegalArgumentException("Value should row '" + row + "' < 0, or col '" + col + " < 0");
-        }
-        if (row > sidesNum + 1 || col > sidesNum + 1) {
-            throw new IllegalArgumentException("The value is out of bound");
-        }
+        checkBounds(row, col);
         return grid[row][col];
     }
 
@@ -112,6 +116,7 @@ public class Percolation {
 
     // is site (row, col) full?
     public boolean isFull(int row, int col) {
+        checkBounds(row - 1, col - 1);
         if (isOpen(row, col)) {
             return gridConnection.connected(top, getCorrespondingNumber(row - 1, col - 1));
         }
@@ -129,5 +134,6 @@ public class Percolation {
     }
 
     public static void main(String[] args) {
+
     }
 }
